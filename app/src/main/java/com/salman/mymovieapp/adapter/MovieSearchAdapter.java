@@ -1,6 +1,7 @@
 package com.salman.mymovieapp.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.salman.mymovieapp.R;
+import com.salman.mymovieapp.activity.MovieDetailsActivity;
 import com.salman.mymovieapp.model.MovieResponseResults;
 import com.salman.mymovieapp.viewholder.SearchViewHolder;
 
@@ -31,7 +33,7 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder movieSearchViewHolder, int i) {
-        MovieResponseResults responseResults = results.get(i);
+        final MovieResponseResults responseResults = results.get(i);
         movieSearchViewHolder.setPosterImage(activity, responseResults.getPoster_path());
 
         String title = responseResults.getTitle();
@@ -41,6 +43,17 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         } else {
             movieSearchViewHolder.posterTitle.setVisibility(View.GONE);
         }
+
+        movieSearchViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, MovieDetailsActivity.class);
+                intent.putExtra("id", String.valueOf(responseResults.getId()));
+                activity.startActivity(intent);
+
+                activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
     }
 
     @Override

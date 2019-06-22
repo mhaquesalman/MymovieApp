@@ -1,7 +1,9 @@
 package com.salman.mymovieapp.services;
 
 import com.salman.mymovieapp.model.ArtistDetails;
+import com.salman.mymovieapp.model.ArtistImages;
 import com.salman.mymovieapp.model.ArtistResponse;
+import com.salman.mymovieapp.model.MovieDetails;
 import com.salman.mymovieapp.model.MovieResponse;
 
 import retrofit2.Call;
@@ -16,9 +18,15 @@ public interface RetrofitService {
     @GET("search/movie")
     Call<MovieResponse> getMoviesByQuery(@Query("api_key") String api_key, @Query("query") String query );
 
+    @GET("movie/{movie_id}")
+    Call<MovieDetails> getMovieDetailsByid(@Path("movie_id") int movie_id, @Query("api_key") String api_key );
+
     @GET("search/person")
     Call<ArtistResponse> getArtistsByQuery(@Query("api_key") String api_key, @Query("query") String query );
 
     @GET("person/{person_id}")
     Call<ArtistDetails> getArtistDetailsByid(@Path("person_id") int person_id, @Query("api_key") String api_key );
+
+    @GET("person/{person_id}/images")
+    Call<ArtistImages> getArtistImagesByid(@Path("person_id") int person_id, @Query("api_key") String api_key );
 }

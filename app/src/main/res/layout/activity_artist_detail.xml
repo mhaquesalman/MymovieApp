@@ -63,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/also_knownas_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -91,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/dateofbirth_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -118,6 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/placeofbirth_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -145,6 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/dateofdeath_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -172,6 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/department_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -185,11 +190,12 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp"/>
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/department"
+                    android:id="@+id/department_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:gravity="start"
+                    android:text="App"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginEnd="10dp"/>
@@ -199,6 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/homepage_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -212,7 +219,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp"/>
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/homepage"
+                    android:id="@+id/homepage_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -226,6 +233,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:id="@+id/biography_layout">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -239,7 +247,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp"/>
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/biography"
+                    android:id="@+id/biography_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -249,6 +257,31 @@
                     android:layout_marginEnd="10dp"/>
             </android.support.v7.widget.LinearLayoutCompat>
 
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                android:id="@+id/profile_layout">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile :"
+                    android:textColor="#000"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/profileimage_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#e4e4e4"
+                    android:nestedScrollingEnabled="false"/>
+            </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>
 
     </android.support.v4.widget.NestedScrollView>

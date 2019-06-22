@@ -6,14 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.salman.mymovieapp.R;
+import com.salman.mymovieapp.adapter.ProfileImagesAdapter;
 import com.salman.mymovieapp.client.RetrofitClient;
 import com.salman.mymovieapp.model.ArtistDetails;
+import com.salman.mymovieapp.model.ArtistImages;
+import com.salman.mymovieapp.model.ArtistImagesProfiles;
 import com.salman.mymovieapp.services.RetrofitService;
 import com.squareup.picasso.Picasso;
 
@@ -33,15 +40,19 @@ public class ArtistDetailActivity extends AppCompatActivity {
     LinearLayoutCompat department_layout;
     LinearLayoutCompat homepage_layout;
     LinearLayoutCompat biography_layout;
+    LinearLayoutCompat profile_layout;
 
     AppCompatTextView artistname;
     AppCompatTextView also_knownas;
     AppCompatTextView dateofbirth;
     AppCompatTextView placeofbirth;
     AppCompatTextView dateofdeath;
-    AppCompatTextView departmentdetail;
-    AppCompatTextView homepagedetail;
-    AppCompatTextView biographydetail;
+    AppCompatTextView department_details;
+    AppCompatTextView homepage_details;
+    AppCompatTextView biography_details;
+    RecyclerView profileimage_details;
+
+    ProfileImagesAdapter profileImagesAdapter;
 
 
     @Override
@@ -60,14 +71,18 @@ public class ArtistDetailActivity extends AppCompatActivity {
         department_layout = findViewById(R.id.department_layout);
         homepage_layout = findViewById(R.id.homepage_layout);
         biography_layout = findViewById(R.id.biography_layout);
+        profile_layout = findViewById(R.id.profile_layout);
 
         also_knownas = findViewById(R.id.also_knownas);
         dateofbirth = findViewById(R.id.dateofbirth);
         placeofbirth = findViewById(R.id.placeofbirth);
         dateofdeath = findViewById(R.id.dateofdeath);
-        departmentdetail = findViewById(R.id.department);
-        homepagedetail = findViewById(R.id.homepage);
-        biographydetail = findViewById(R.id.biography);
+        department_details = findViewById(R.id.department_details);
+        homepage_details = findViewById(R.id.homepage_details);
+        biography_details = findViewById(R.id.biography_details);
+
+        profileimage_details = findViewById(R.id.profileimage_details);
+        profileimage_details.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         RetrofitService retrofitService = RetrofitClient.getClient().create(RetrofitService.class);
 
@@ -82,10 +97,12 @@ public class ArtistDetailActivity extends AppCompatActivity {
                 artistDetailsCall.enqueue(new Callback<ArtistDetails>() {
                     @Override
                     public void onResponse(@NonNull Call<ArtistDetails> call, @NonNull Response<ArtistDetails> response) {
-                       ArtistDetails artistDetails = response.body();
-                        Log.d(TAG, "onResponse: "+ response.toString());
-                        if (artistDetails != null){
-                            getArtistDetails(artistDetails);
+                       ArtistDetails artistDetailsResponse = response.body();
+                       // Log.d(TAG, "onResponse: "+ response.body().toString());
+                       // Log.d(TAG, "onResponse: Bio: "+ response.body().getBiography());
+                       // Log.d(TAG, "onResponse: Dept: "+ response.body().getKnown_for_department());
+                        if (artistDetailsResponse != null){
+                            getArtistDetails(artistDetailsResponse);
                         } else {
                             Toast.makeText(ArtistDetailActivity.this, "any details not found", Toast.LENGTH_SHORT).show();
                         }
@@ -96,22 +113,51 @@ public class ArtistDetailActivity extends AppCompatActivity {
                         Toast.makeText(ArtistDetailActivity.this, "something wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+                Call<ArtistImages> artistImagesCall = retrofitService.getArtistImagesByid(id, RetrofitClient.getApiKey());
+                artistImagesCall.enqueue(new Callback<ArtistImages>() {
+                    @Override
+                    public void onResponse(Call<ArtistImages> call, Response<ArtistImages> response) {
+                        ArtistImages artistImages = response.body();
+                        if (artistImages != null){
+                            List<ArtistImagesProfiles> artistImagesProfilesList = artistImages.getProfile();
+                            if (artistImagesProfilesList != null && artistImagesProfilesList.size() > 0){
+                                profile_layout.setVisibility(View.VISIBLE);
+                                profileImagesAdapter = new ProfileImagesAdapter(ArtistDetailActivity.this, artistImagesProfilesList);
+                                profileimage_details.setAdapter(profileImagesAdapter);
+
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(ArtistDetailActivity.this, R.anim.layout_slide_right);
+                                profileimage_details.setLayoutAnimation(controller);
+                                profileimage_details.scheduleLayoutAnimation();
+                            } else {
+                                profileimage_details.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArtistImages> call, Throwable t) {
+
+                    }
+                });
             }
         }
 
     }
 
-    public void getArtistDetails(ArtistDetails artistDetails) {
+    public void getArtistDetails( ArtistDetails artistDetailsResponse) {
 
-        String profilePath = artistDetails.getProfile_path();
-        String name = artistDetails.getName();
-        String birthday = artistDetails.getBirthday();
-        String placeOfBirth = artistDetails.getPlace_of_birth();
-        String dateOfDeath = artistDetails.getDeathday();
-        String department = artistDetails.getKnown_for_department();
-        String homepage = artistDetails.getHomepage();
-        String biography = artistDetails.getBiography();
-        List<String> alsoKnownAsList = artistDetails.getAlso_known_as();
+        String profilePath = artistDetailsResponse.getProfile_path();
+        String name = artistDetailsResponse.getName();
+        String birthday = artistDetailsResponse.getBirthday();
+        String placeOfBirth = artistDetailsResponse.getPlace_of_birth();
+        String dateOfDeath = artistDetailsResponse.getDeathday();
+        String department = artistDetailsResponse.getKnown_for_department();
+        Log.d(TAG, "getArtistDetails: DEPARTMENT: "+department);
+        String homepage = artistDetailsResponse.getHomepage();
+        String biography = artistDetailsResponse.getBiography();
+        Log.d(TAG, "getArtistDetails: BIO: "+biography);
+        List<String> alsoKnownAsList = artistDetailsResponse.getAlso_known_as();
 
         Picasso.with(this).load(profilePath).into(artist_image);
 
@@ -163,7 +209,7 @@ public class ArtistDetailActivity extends AppCompatActivity {
             }
         } else {
             placeofbirth_layout.setVisibility(View.GONE);
-
+        }
             if (dateOfDeath != null) {
                 if (dateOfDeath.length() > 0) {
                     dateofdeath.setText(dateOfDeath);
@@ -177,7 +223,9 @@ public class ArtistDetailActivity extends AppCompatActivity {
 
             if (department != null) {
                 if (department.length() > 0) {
-                    departmentdetail.setText(department);
+                    Log.d(TAG, "getArtistDetails1: "+department);
+                    department_details.setText(department);
+                    Log.d(TAG, "getArtistDetails: "+department);
                     department_layout.setVisibility(View.VISIBLE);
                 } else {
                     department_layout.setVisibility(View.GONE);
@@ -188,7 +236,7 @@ public class ArtistDetailActivity extends AppCompatActivity {
 
             if (homepage != null) {
                 if (homepage.length() > 0) {
-                    homepagedetail.setText(homepage);
+                    homepage_details.setText(homepage);
                     homepage_layout.setVisibility(View.VISIBLE);
                 } else {
                     homepage_layout.setVisibility(View.GONE);
@@ -199,7 +247,7 @@ public class ArtistDetailActivity extends AppCompatActivity {
 
             if (biography != null) {
                 if (biography.length() > 0) {
-                    biographydetail.setText(biography);
+                    biography_details.setText(biography);
                     biography_layout.setVisibility(View.VISIBLE);
                 } else {
                     biography_layout.setVisibility(View.GONE);
@@ -209,7 +257,6 @@ public class ArtistDetailActivity extends AppCompatActivity {
             }
 
         }
-    }
 
     @Override
     public void finish() {
@@ -218,3 +265,4 @@ public class ArtistDetailActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
+
