@@ -9,10 +9,10 @@ import android.view.View;
 import com.salman.mymovieapp.R;
 import com.squareup.picasso.Picasso;
 
-public class ProfileImagesViewholder extends RecyclerView.ViewHolder {
+public class ImagesViewHolder extends RecyclerView.ViewHolder {
      public AppCompatImageView profileImage;
 
-    public ProfileImagesViewholder(@NonNull View itemView) {
+    public ImagesViewHolder(@NonNull View itemView) {
         super(itemView);
         profileImage = itemView.findViewById(R.id.profile_image);
     }

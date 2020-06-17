@@ -13,18 +13,19 @@ import android.view.ViewGroup;
 import com.salman.mymovieapp.R;
 import com.salman.mymovieapp.activity.ImageViewerActivity;
 import com.salman.mymovieapp.model.ArtistImagesProfiles;
+import com.salman.mymovieapp.model.MovieImagesBackDropsAndPosters;
 import com.salman.mymovieapp.viewholder.ImagesViewHolder;
 
 import java.util.List;
 
-public class ProfileImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
+public class MoviePosterImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
-    Activity activity;
-    List<ArtistImagesProfiles> artistImagesProfilesList;
+    private Activity activity;
+    private List<MovieImagesBackDropsAndPosters> movieImagesBackDropsAndPostersList;
 
-    public ProfileImagesAdapter(Activity activity, List<ArtistImagesProfiles> artistImagesProfilesList) {
+    public MoviePosterImagesAdapter(Activity activity, List<MovieImagesBackDropsAndPosters> movieImagesBackDropsAndPostersList) {
         this.activity = activity;
-        this.artistImagesProfilesList = artistImagesProfilesList;
+        this.movieImagesBackDropsAndPostersList = movieImagesBackDropsAndPostersList;
     }
 
     @NonNull
@@ -36,16 +37,15 @@ public class ProfileImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull final ImagesViewHolder imagesViewHolder, int i) {
-        final ArtistImagesProfiles artistImagesProfiles = artistImagesProfilesList.get(i);
-        imagesViewHolder.setProfileImage(activity, artistImagesProfiles.getFile_path());
+        final MovieImagesBackDropsAndPosters movieImagesBackDropsAndPosters = movieImagesBackDropsAndPostersList.get(i);
+        imagesViewHolder.setProfileImage(activity, movieImagesBackDropsAndPosters.getFile_path());
 
         imagesViewHolder.profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, ImageViewerActivity.class);
-                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, imagesViewHolder.profileImage,
-                        ViewCompat.getTransitionName(imagesViewHolder.profileImage));
-                intent.putExtra("imageUrl", artistImagesProfiles.getFile_path());
+                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, imagesViewHolder.profileImage, ViewCompat.getTransitionName(imagesViewHolder.profileImage));
+                intent.putExtra("imageUrl", movieImagesBackDropsAndPosters.getFile_path());
                 activity.startActivity(intent, compat.toBundle());
 
             }
@@ -54,6 +54,6 @@ public class ProfileImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder>
 
     @Override
     public int getItemCount() {
-        return artistImagesProfilesList.size();
+        return 0;
     }
 }

@@ -3,23 +3,23 @@ package com.salman.mymovieapp.model;
 import java.util.List;
 
 public class ArtistImages {
-    private List<ArtistImagesProfiles> profile;
+    private List<ArtistImagesProfiles> profiles;
     private Integer id;
 
     public ArtistImages() {
     }
 
     public ArtistImages(List<ArtistImagesProfiles> profile, Integer id) {
-        this.profile = profile;
+        this.profiles = profile;
         this.id = id;
     }
 
-    public List<ArtistImagesProfiles> getProfile() {
-        return profile;
+    public List<ArtistImagesProfiles> getProfiles() {
+        return profiles;
     }
 
-    public void setProfile(List<ArtistImagesProfiles> profile) {
-        this.profile = profile;
+    public void setProfiles(List<ArtistImagesProfiles> profiles) {
+        this.profiles = profiles;
     }
 
     public Integer getId() {

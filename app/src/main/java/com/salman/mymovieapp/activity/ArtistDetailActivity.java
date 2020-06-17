@@ -118,9 +118,11 @@ public class ArtistDetailActivity extends AppCompatActivity {
                 artistImagesCall.enqueue(new Callback<ArtistImages>() {
                     @Override
                     public void onResponse(Call<ArtistImages> call, Response<ArtistImages> response) {
+                        Log.d(TAG, "onResponse:artistImagesCall " + response.body());
                         ArtistImages artistImages = response.body();
                         if (artistImages != null){
-                            List<ArtistImagesProfiles> artistImagesProfilesList = artistImages.getProfile();
+                            List<ArtistImagesProfiles> artistImagesProfilesList = artistImages.getProfiles();
+                            Log.d(TAG, "onResponse:ArtistImagesProfiles " + artistImagesProfilesList);
                             if (artistImagesProfilesList != null && artistImagesProfilesList.size() > 0){
                                 profile_layout.setVisibility(View.VISIBLE);
                                 profileImagesAdapter = new ProfileImagesAdapter(ArtistDetailActivity.this, artistImagesProfilesList);
@@ -137,7 +139,7 @@ public class ArtistDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ArtistImages> call, Throwable t) {
-
+                        Toast.makeText(ArtistDetailActivity.this, "Images Loading Failed ", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

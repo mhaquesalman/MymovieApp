@@ -282,6 +282,7 @@
                     android:background="#e4e4e4"
                     android:nestedScrollingEnabled="false"/>
             </android.support.v7.widget.LinearLayoutCompat>
+
         </android.support.v7.widget.LinearLayoutCompat>
 
     </android.support.v4.widget.NestedScrollView>
